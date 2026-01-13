@@ -25,6 +25,11 @@ local function configure_lsp(config)
   config.handlers = logger.handlers()
 
   -- Use the new vim.lsp.config API (Neovim 0.11+)
+  if vim.lsp.config == nil or vim.lsp.enable == nil then
+    vim.notify('ruby-lsp.nvim requires Neovim 0.11+ with vim.lsp.config support', vim.log.levels.ERROR)
+    return
+  end
+
   vim.lsp.config('ruby_lsp', config)
   vim.lsp.enable('ruby_lsp')
 end

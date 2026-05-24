@@ -82,12 +82,12 @@ local function setup_lens_filters()
   end
 end
 
----Creates autocommands to refresh code lenses on various events
-local function setup_refresh_autocmd()
+---Creates autocommands to keep code lenses enabled on various events
+local function setup_codelens_autocmd()
   vim.api.nvim_create_autocmd({ 'LspAttach', 'BufEnter', 'CursorHold', 'InsertLeave' }, {
     pattern = { '*.rb', '*.erb' },
-    callback = function(args) vim.lsp.codelens.refresh({ bufnr = args.buf }) end,
-    desc = 'Refresh active code lenses',
+    callback = function(args) vim.lsp.codelens.enable(true, { bufnr = args.buf }) end,
+    desc = 'Enable active code lenses',
   })
 end
 
@@ -147,11 +147,11 @@ end
 
 ---Sets up code lens functionality for Ruby LSP
 ---1. Sets up filtering for supported code lens commands
----2. Creates autocommands to refresh code lenses
+---2. Creates autocommands to keep code lenses enabled
 ---3. Registers handlers for Ruby LSP specific commands
 M.setup_codelens = function()
   setup_lens_filters()
-  setup_refresh_autocmd()
+  setup_codelens_autocmd()
   vim.lsp.commands['rubyLsp.runTest'] = run_test_command
   vim.lsp.commands['rubyLsp.runTask'] = run_task_command
   vim.lsp.commands['rubyLsp.openFile'] = open_file_command
